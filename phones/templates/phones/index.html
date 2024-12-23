@@ -1,0 +1,29 @@
+{% extends 'phones/layout.html' %}
+
+{% block content %}
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+	{% for phone in phones %}
+	<div class="col">
+		<div class="card card-size d-flex align-items-center w-100">
+			<img class="img-list mt-3" src="{{ phone.photo.url }}">
+		  	<div class="card-body d-flex flex-column align-items-center">
+				<h5 class="card-title fs-3 fw-bold">{{ phone.name }}</h5>
+				<div class="d-flex gap-5 none-decoration">
+					<div class="card-text">
+						<span class="text-secondary">Ціна </span> 
+						<span class="fs-4">{{ phone.price }}</span> 
+					</div>
+						
+					<div class="card-text">
+						<span class="text-secondary">К-сть: </span> 
+						<span class="fs-4">{{ phone.quantity }}</span> 
+					</div>
+				</div>
+				<a href="{{ phone.get_absolute_url }}" type="button" class="btn mt-3 btn-dark fs-3">Переглянути</a>
+		  	</div>
+		</div>
+	  </div>
+	{% endfor %}
+</div>
+{% endblock %}

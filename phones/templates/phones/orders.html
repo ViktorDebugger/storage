@@ -1,0 +1,36 @@
+{% extends 'phones/layout.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-muted">Всі замовлення - {{ order_type }}</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for order in orders %}
+            <div class="col mb-4">
+                <div class="card shadow-sm">
+                    <div class="text-center">
+                        <img src="{{ order.phone_id.photo.url }}" class="img-list mt-3" alt="{{ order.phone_id.name }}">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-muted">{{ order.phone_id.name }}</h5>
+                        <div class="d-flex justify-content-between">
+                            <div class="titles w-25 d-flex flex-column gap-2">
+                                <strong>Дата:</strong>
+                                <strong>Кількість:</strong>
+                                <strong>Ціна:</strong>
+                            </div>
+                            <div class="datas w-50 d-flex flex-column gap-2">
+                                <span>{{ order.order_datetime }}</span>
+                                <span>{{ order.quantity }}</span>
+                                <span>{{ order.total_price }} грн</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'phones/layout.html' %}
+
+{% block content %}
+<h1>{{title}}</h1>
+    <form method="post" class="d-flex flex-column gap-2 mb-5">
+        {% csrf_token %}
+        <div class="form-error">{{ form.non_field_errors }}</div>
+        {% for f in form %}
+            <div class="d-flex">
+                <label class="form-label" for="{{ f.id_for_label }}">{{f.label}} </label>
+                {{ f }}
+            </div>
+            <div class="form-error">{{ f.errors }}</div>
+        {% endfor %}
+        <button type="submit" class="btn btn-dark w-50 mt-4">Зареєструватися</button>
+    </form>
+{% endblock %}

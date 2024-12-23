@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	<link type="text/css" href="{% static 'phones/css/styles.css' %}" rel="stylesheet" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="shortcut icon" href="{% static 'women/images/main.ico' %}" type="image/x-icon"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="{% static 'phones/css/bootstrap.min.css' %}" rel="stylesheet">
+	
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg bg-dark">
+		<div class="container">
+	
+			<!-- Головне меню -->
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<!-- Меню зліва -->
+				<ul class="navbar-nav me-auto d-flex gap-5">
+					{% for m in menu %}
+						{% if request.user.is_authenticated %}
+							<li class="nav-item">
+								<a class="nav-link hover-item" href="{% url m.url_name %}">{{ m.title }}</a>
+							</li>
+						{% endif %}
+					{% endfor %}
+				</ul>
+	
+				<ul class="navbar-nav ms-auto">
+					{% if request.user.is_authenticated %}
+					<li class="nav-item">
+						<a class="nav-link text-light" href="#">{{ user.username }}</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link hover-item" href="{% url 'logout' %}">Вийти</a>
+					</li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link hover-item" href="{% url 'register' %}">Реєстрація</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link hover-item" href="{% url 'login' %}">Увійти</a>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	<div class="container-fluid px-3 mt-4 mb-3">
+		<div class="row">
+			<div class="col-md-2">
+				<div class="list-group">
+					{% if brand_selected == 0 %}
+						<a href="{% url 'home' %}" class="list-group-item list-group-item-action active">Всі бренди</a>
+					{% else %}
+						<a href="{% url 'home' %}" class="list-group-item list-group-item-action">Всі бренди</a>
+					{% endif %}
+					
+					{% for brand in brands %}
+						{% if brand.phone_count > 0 %}
+							{% if brand.pk == brand_selected %}
+								<a href="{{ brand.get_absolute_url }}" class="list-group-item list-group-item-action active">{{ brand.name }}</a>
+							{% else %}
+								<a href="{{ brand.get_absolute_url }}" class="list-group-item list-group-item-action">{{ brand.name }}</a>
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+			<div class="col-md-10">
+				{% block content %}
+				{% endblock %}
+			</div>
+		</div>
+	</div>
+
+	
+	{% if page_obj.has_other_pages %}
+		<nav aria-label="Page navigation">
+			<ul class="pagination justify-content-center mb-5 custom-pagination">
+				{% if page_obj.has_previous %}
+				<li class="page-item">
+					<a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+						<span aria-hidden="true">←</span>
+					</a>
+				</li>
+				{% else %}
+				<li class="page-item disabled">
+					<span class="page-link">←</span>
+				</li>
+				{% endif %}
+
+				{% for p in paginator.page_range %}
+					{% if page_obj.number == p %}
+					<li class="page-item active" aria-current="page">
+						<span class="page-link">{{ p }}</span>
+					</li>
+					{% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+					<li class="page-item">
+						<a class="page-link" href="?page={{ p }}">{{ p }}</a>
+					</li>
+					{% endif %}
+				{% endfor %}
+
+				{% if page_obj.has_next %}
+				<li class="page-item">
+					<a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+						<span aria-hidden="true">→</span>
+					</a>
+				</li>
+				{% else %}
+				<li class="page-item disabled">
+					<span class="page-link">→</span>
+				</li>
+				{% endif %}
+			</ul>
+		</nav>
+	{% endif %}
+
+	<script src="{% static 'phones/js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+</html>

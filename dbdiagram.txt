@@ -1,0 +1,31 @@
+Table Phone {
+  id integer [primary key]
+  name varchar
+  price float
+  quantity integer
+  screen_diagonal float
+  battery_capacity integer
+  processor_cores integer
+  operating_system varchar
+  ram integer
+  rom integer
+  brand_id integer
+}
+
+Table Brand {
+  id integer [primary key]
+  name varchar
+}
+
+Ref: Brand.id < Phone.brand_id
+
+Table Order {
+  id integer [primary key]
+  order_type varchar
+  phone_id integer
+  order_datetime datetime
+  quantity integer
+  total_price float
+}
+
+Ref: Phone.id < Order.phone_id
